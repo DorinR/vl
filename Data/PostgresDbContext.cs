@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using webapitest.Repository.ArtifactGeneration.Models;
 using webapitest.Repository.Models;
-using webapitest.Repository.Models.Distortions;
 
 namespace webapitest.Data;
 
@@ -14,10 +14,7 @@ public class PostgresDbContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
-    public DbSet<Thought> Thoughts { get; set; }
-    public DbSet<Distortion> Distortion { get; set; }
-
-    public DbSet<Event> Events { get; set; }
+    public DbSet<Artifact> Artifacts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -35,25 +32,6 @@ public class PostgresDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Thought>()
-            .HasOne<User>(e => e.User)
-            .WithMany(e => e.Thoughts)
-            .HasForeignKey(e => e.UserId)
-            .IsRequired();
-
-        modelBuilder.Entity<Distortion>()
-            .HasMany(e => e.Thoughts)
-            .WithMany(e => e.Distortions);
-
-        modelBuilder.Entity<Event>()
-            .HasOne<User>(e => e.User)
-            .WithMany(e => e.Events)
-            .HasForeignKey(e => e.UserId)
-            .IsRequired();
-
-        modelBuilder.Entity<Event>()
-            .HasMany(e => e.Distortions)
-            .WithMany(e => e.Events);
     }
 
     private static string ConvertDatabaseUrlToConnectionString(string databaseUrl)

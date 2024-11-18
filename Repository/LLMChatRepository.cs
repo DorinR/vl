@@ -1,6 +1,5 @@
 using FuzzySharp;
 using OpenAI.Chat;
-using webapitest.Repository.Models.Distortions;
 
 namespace webapitest.Repository;
 
@@ -44,56 +43,28 @@ public class LLMChatRepository
             throw new Exception("there was a problem contact the OpenAI server");
         }
     }
-
-    /**
-     * Returns a list of the IDs of the distortions detected
-     */
-    public async Task<List<DistortionDto>> DetectDistortionsInThought(List<DistortionDto> possibleDistortions,
-        string thought)
+    
+    public async Task<string> GetChatResponseWithSystemMessage(string usrMessage, string sysMessage)
     {
         ChatClient client = new("gpt-4o-mini", _configuration["openaiApiKey"]);
 
         try
         {
-            SystemChatMessage systemMessage = new(
-                "I am practicing Cognitive behavioural therapy " +
-                "and you are my aid.  I will give you a list of possible " +
-                "thought distortions followed by a thought and your task" +
-                " is to tell me which of those I've engages in. You must give" +
-                "me the response in the form of a list of distortions taken from " +
-                "the list that i provide you. Respond with a list of these separated" +
-                "using a % character");
+            SystemChatMessage systemMessage = new(sysMessage);
 
-            var availableDistortionsString =
-                string.Join(" ", possibleDistortions.Select(distortion => distortion.Name));
-
-            UserChatMessage availableDistortions = new(availableDistortionsString);
-
-            UserChatMessage userThought = new(thought);
+            UserChatMessage userMessage = new(usrMessage);
 
             var completionPackage = new List<ChatMessage>
             {
                 systemMessage,
-                availableDistortions,
-                userThought
+                userMessage
             };
 
             ChatCompletion result = await client.CompleteChatAsync(completionPackage);
 
             var response = result.Content.FirstOrDefault()?.Text;
 
-            var detectedDistortionsStrings = response.Split("%").ToList();
-
-            var detectedDistortions = new List<DistortionDto>();
-
-            foreach (var distortion in possibleDistortions)
-            foreach (var distortionString in detectedDistortionsStrings)
-            {
-                var dissimilarityDistance = Levenshtein.EditDistance(distortion.Name, distortionString);
-                if (dissimilarityDistance < 3) detectedDistortions.Add(distortion);
-            }
-
-            return detectedDistortions;
+            return response;
         }
         catch (Exception ex)
         {

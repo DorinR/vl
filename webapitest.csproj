@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Business\ArtifactGeneration\Models\" />
         <Folder Include="Migrations\"/>
     </ItemGroup>
 

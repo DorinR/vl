@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using webapitest;
-using webapitest.Business;
-using webapitest.Business.Interfaces;
+using webapitest.Business.ArtifactGeneration;
 using webapitest.Data;
 using webapitest.Middlewares.JwtDataExtraction;
 using webapitest.Repository;
+using webapitest.Repository.ArtifactGeneration;
+using webapitest.Repository.ArtifactGeneration.Interfaces;
 using webapitest.Repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,21 +24,16 @@ builder.Configuration
 // Add services to the DI container.
 builder.Services.AddControllers();
 
-// Thought Service DI
-builder.Services.AddScoped<IThoughtBusiness, ThoughtBusiness>();
-builder.Services.AddScoped<ThoughtBusiness>();
-builder.Services.AddScoped<IThoughtRepository, ThoughtRepository>();
-builder.Services.AddScoped<ThoughtRepository>();
-
 // User Service DI
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<UserRepository>();
 
+// Artifact Generation DI
+builder.Services.AddScoped<ArtifactGenerationBusiness>();
+builder.Services.AddScoped<IArtifactGenerationRepository, ArtifactGenerationRepository>();
+
 // ChatLLM DI
 builder.Services.AddScoped<LLMChatRepository>();
-
-// Distortion DI
-builder.Services.AddScoped<DistortionRepository>();
 
 #endregion
 

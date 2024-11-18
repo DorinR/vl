@@ -22,119 +22,28 @@ namespace webapitest.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("DistortionEvent", b =>
+            modelBuilder.Entity("webapitest.Repository.ArtifactGeneration.Models.Artifact", b =>
                 {
-                    b.Property<Guid>("DistortionsId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("EventsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("DistortionsId", "EventsId");
-
-                    b.HasIndex("EventsId");
-
-                    b.ToTable("DistortionEvent");
-                });
-
-            modelBuilder.Entity("DistortionThought", b =>
-                {
-                    b.Property<Guid>("DistortionsId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ThoughtsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("DistortionsId", "ThoughtsId");
-
-                    b.HasIndex("ThoughtsId");
-
-                    b.ToTable("DistortionThought");
-                });
-
-            modelBuilder.Entity("webapitest.Repository.Models.Distortions.Distortion", b =>
-                {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Distortion");
-                });
-
-            modelBuilder.Entity("webapitest.Repository.Models.Event", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Challenge")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ChallengePrompt")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("DateCreated")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Emotions")
+                    b.Property<string>("InitialDetails")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Outcome")
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<string>("ResultingBehaviour")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Situation")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Thoughts")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Events");
-                });
-
-            modelBuilder.Entity("webapitest.Repository.Models.Thought", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Thoughts");
+                    b.ToTable("Artifacts");
                 });
 
             modelBuilder.Entity("webapitest.Repository.Models.User", b =>
@@ -154,65 +63,6 @@ namespace webapitest.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("DistortionEvent", b =>
-                {
-                    b.HasOne("webapitest.Repository.Models.Distortions.Distortion", null)
-                        .WithMany()
-                        .HasForeignKey("DistortionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("webapitest.Repository.Models.Event", null)
-                        .WithMany()
-                        .HasForeignKey("EventsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DistortionThought", b =>
-                {
-                    b.HasOne("webapitest.Repository.Models.Distortions.Distortion", null)
-                        .WithMany()
-                        .HasForeignKey("DistortionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("webapitest.Repository.Models.Thought", null)
-                        .WithMany()
-                        .HasForeignKey("ThoughtsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("webapitest.Repository.Models.Event", b =>
-                {
-                    b.HasOne("webapitest.Repository.Models.User", "User")
-                        .WithMany("Events")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("webapitest.Repository.Models.Thought", b =>
-                {
-                    b.HasOne("webapitest.Repository.Models.User", "User")
-                        .WithMany("Thoughts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("webapitest.Repository.Models.User", b =>
-                {
-                    b.Navigation("Events");
-
-                    b.Navigation("Thoughts");
                 });
 #pragma warning restore 612, 618
         }
