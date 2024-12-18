@@ -28,4 +28,11 @@ public class ArtifactGenerationRepository : IArtifactGenerationRepository
         
         return newArtifact.Id.ToString();
     }
+
+    public async Task<string> CreateArtifactWithFragments(string initialDetails, string artifactType,
+        List<Fragment.Models.Fragment> fragments)
+    {
+        
+    }
+    
 }
