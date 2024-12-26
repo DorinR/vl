@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using webapitest.Repository.ArtifactGeneration.Models;
+using webapitest.Repository.Fragment.Models;
 using webapitest.Repository.Models;
 
 namespace webapitest.Data;
@@ -13,8 +14,9 @@ public class PostgresDbContext : DbContext
         _configuration = configuration;
     }
 
-    public DbSet<User> Users { get; set; }
-    public DbSet<Artifact> Artifacts { get; set; }
+    public DbSet<UserModel> Users { get; set; }
+    public DbSet<ArtifactModel> Artifacts { get; set; }
+    public DbSet<FragmentModel> Fragments { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -32,6 +34,12 @@ public class PostgresDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // One-to-many configuration for Artifact -> Fragments
+        modelBuilder.Entity<ArtifactModel>()
+            .HasMany(a => a.Fragments) // One Artifact has many Fragments
+            .WithOne(f => f.Artifact) // Each Fragment belongs to one Artifact
+            .HasForeignKey(f => f.ArtifactId) // Foreign key in Fragment
+            .OnDelete(DeleteBehavior.Cascade); // Optional: cascade delete fragments if their artifact is deleted
     }
 
     private static string ConvertDatabaseUrlToConnectionString(string databaseUrl)

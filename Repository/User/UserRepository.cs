@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using webapitest.Controllers.Models;
 using webapitest.Data;
-using webapitest.Repository.Models;
 using webapitest.Repository.Interfaces;
+using webapitest.Repository.Models;
 
 namespace webapitest.Repository;
 
@@ -15,19 +15,19 @@ public class UserRepository : IUserRepository
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
 
-    public async Task<User> GetUserById(Guid userId)
+    public async Task<UserModel> GetUserById(Guid userId)
     {
         return await _dbContext.Users.FindAsync(userId);
     }
 
-    public async Task<User> FindUser(string email)
+    public async Task<UserModel> FindUser(string email)
     {
         return await _dbContext.Users.FirstOrDefaultAsync(user => user.Email == email);
     }
 
     public async Task<string> Register(CreateUserModel request)
     {
-        var newUser = new User()
+        var newUser = new UserModel
         {
             Email = request.Email,
             Password = request.Password

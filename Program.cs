@@ -9,6 +9,8 @@ using webapitest.Middlewares.JwtDataExtraction;
 using webapitest.Repository;
 using webapitest.Repository.ArtifactGeneration;
 using webapitest.Repository.ArtifactGeneration.Interfaces;
+using webapitest.Repository.Fragment;
+using webapitest.Repository.Fragment.Interfaces;
 using webapitest.Repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +33,9 @@ builder.Services.AddScoped<UserRepository>();
 // Artifact Generation DI
 builder.Services.AddScoped<ArtifactGenerationBusiness>();
 builder.Services.AddScoped<IArtifactGenerationRepository, ArtifactGenerationRepository>();
+
+// Fragment DI
+builder.Services.AddScoped<IFragmentRepository, FragmentRepository>();
 
 // ChatLLM DI
 builder.Services.AddScoped<LLMChatRepository>();

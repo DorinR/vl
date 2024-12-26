@@ -5,9 +5,9 @@ namespace webapitest.Repository.Interfaces;
 
 public interface IUserRepository
 {
-    public Task<User> GetUserById(Guid userId);
+    public Task<UserModel> GetUserById(Guid userId);
 
-    public Task<User> FindUser(string email);
+    public Task<UserModel> FindUser(string email);
 
     public Task<string> Register(CreateUserModel model);
 }

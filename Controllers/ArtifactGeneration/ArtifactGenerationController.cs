@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using webapitest.Business.ArtifactGeneration;
 using webapitest.Controllers.Models;
@@ -27,4 +26,25 @@ public class ArtifactGenerationController : ControllerBase
             response = result
         });
     }
+
+    [HttpPost]
+    [Route("GetNextQuestion")]
+    public async Task<ActionResult> GetNextQuestion([FromBody] GetNextQuestionModel model)
+    {
+        try
+        {
+            var nextQuestion = await _artifactGenerationBusiness.GetNextQuestion(model.ArtifactId);
+            return Ok(new { nextQuestion });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = "An unexpected error occurred.", details = ex.Message });
+        }
+    }
 }
+
+public record GetNextQuestionModel(int ArtifactId);

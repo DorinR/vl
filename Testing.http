@@ -7,3 +7,11 @@ Content-Type: application/json
 {
   "userMessage": "I hired a contractor in Montreal to renovate my kitchen, with a signed contract stating work would be completed by September 30, 2024, for $25,000. I paid a $10,000 deposit, but as of October 15, the contractor abandoned the project with only 30% completed and has not responded to my attempts to contact them. I am demanding the return of my $10,000 deposit and $5,000 in additional compensation to cover increased costs caused by their failure to fulfill the contract."
 }
+
+###
+POST https://localhost:7031/ArtifactGeneration/GetNextQuestion
+Content-Type: application/json
+
+{
+  "ArtifactId": 2
+}
