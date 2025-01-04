@@ -23,7 +23,7 @@ public class ArtifactGenerationController : ControllerBase
 
         return Ok(new
         {
-            response = result
+            artifactId = result
         });
     }
 
@@ -45,6 +45,50 @@ public class ArtifactGenerationController : ControllerBase
             return StatusCode(500, new { error = "An unexpected error occurred.", details = ex.Message });
         }
     }
+
+    [HttpPost]
+    [Route("SubmitMoreInformation")]
+    public async Task<ActionResult> SubmitMoreInformation([FromBody] SubmitMoreInformationModel model)
+    {
+        try
+        {
+            var result =
+                await _artifactGenerationBusiness.SubmitMoreInformation(model.ArtifactId, model.UserResponse,
+                    model.UserQuestion);
+            return Ok(new { result.isDone });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = "An unexpected error occurred.", details = ex.Message });
+        }
+    }
+
+    [HttpPost]
+    [Route("GenerateArtifact")]
+    public async Task<ActionResult> GenerateArtifact([FromBody] GenerateArtifactModel model)
+    {
+        try
+        {
+            var result = await _artifactGenerationBusiness.GenerateArtifact(model.ArtifactId);
+            return Ok(new { result.Artifact });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = "An unexpected error occurred.", details = ex.Message });
+        }
+    }
 }
 
 public record GetNextQuestionModel(int ArtifactId);
+
+public record SubmitMoreInformationModel(int ArtifactId, string UserResponse, string UserQuestion);
+
+public record GenerateArtifactModel(int ArtifactId);

@@ -28,4 +28,16 @@ public class FragmentRepository : IFragmentRepository
 
         return fragments;
     }
+
+    public async Task<int> AddFragmentValue(int fragmentId, string value)
+    {
+        var fragmentToUpdate = await _dbContext.Fragments.FindAsync(fragmentId);
+
+        if (fragmentToUpdate == null) throw new Exception("Fragment not found");
+
+        fragmentToUpdate.Value = value;
+        await _dbContext.SaveChangesAsync();
+
+        return fragmentToUpdate.Id;
+    }
 }

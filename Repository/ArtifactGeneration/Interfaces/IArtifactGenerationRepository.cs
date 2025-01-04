@@ -4,6 +4,6 @@ namespace webapitest.Repository.ArtifactGeneration.Interfaces;
 
 public interface IArtifactGenerationRepository
 {
-    public Task<string> InitializeArtifact(string initialDetails, string artifactType,
+    public Task<int> InitializeArtifact(string initialDetails, string artifactType,
         List<FragmentSpec> fragmentSpecs);
 }

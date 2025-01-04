@@ -15,7 +15,7 @@ public class ArtifactGenerationRepository : IArtifactGenerationRepository
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
 
-    public async Task<string> InitializeArtifact(string initialDetails, string artifactType,
+    public async Task<int> InitializeArtifact(string initialDetails, string artifactType,
         List<FragmentSpec> fragmentSpecs)
     {
         var newArtifact = new ArtifactModel
@@ -27,19 +27,13 @@ public class ArtifactGenerationRepository : IArtifactGenerationRepository
             {
                 Code = spec.Code,
                 Description = spec.Description,
-                Value = ""
+                Value = spec.Value ?? ""
             }).ToList()
         };
 
         _dbContext.Artifacts.Add(newArtifact);
         await _dbContext.SaveChangesAsync();
 
-        return newArtifact.Id.ToString();
+        return newArtifact.Id;
     }
-
-    // public async Task<string> CreateArtifactWithFragments(string initialDetails, string artifactType,
-    //     List<Fragment.Models.Fragment> fragments)
-    // {
-    //     
-    // }
 }

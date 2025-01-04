@@ -6,4 +6,6 @@ public interface IFragmentRepository
 {
     public Task<List<FragmentModel>> GetArtifactFragments(int artifactId);
     public Task<List<FragmentModel>> GetEmptyArtifactFragments(int artifactId);
+
+    public Task<int> AddFragmentValue(int fragmentId, string value);
 }

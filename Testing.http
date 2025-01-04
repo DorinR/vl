@@ -9,9 +9,19 @@ Content-Type: application/json
 }
 
 ###
-POST https://localhost:7031/ArtifactGeneration/GetNextQuestion
+POST {{baseurl}}/ArtifactGeneration/GetNextQuestion
 Content-Type: application/json
 
 {
-  "ArtifactId": 2
+  "ArtifactId": 9
+}
+
+###
+POST {{baseurl}}/ArtifactGeneration/SubmitMoreInformation
+Content-Type: application/json
+
+{
+  "ArtifactId": 8,
+  "UserResponse": "My name is John Adams. The first name of the person I was in contact with is Bernard.",
+  "UserQuestion": "Could you please provide the full name of the plaintiff, including their first and last names, as well as the date on which the events occurred, and the first name of the accused?"
 }
